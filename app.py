@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------#
 # Imports
 #----------------------------------------------------------------------------#
-
+import sys
 import json
 import dateutil.parser
 import babel
@@ -10,10 +10,8 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 import logging
 from logging import Formatter, FileHandler
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from forms import *
-
-import sys
 from flask_migrate import Migrate
 
 #----------------------------------------------------------------------------#
@@ -57,7 +55,7 @@ def artist_upcoming_shows(artist_id):
 #----------------------------------------------------------------------------#
 
 class Venue(db.Model):
-    __tablename__ = 'Venue'
+    __tablename__ = 'venues'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False, unique=True)
@@ -283,7 +281,6 @@ def create_venue_submission():
       city=request.form.get('city'),
       state=request.form.get('state'),
       address=request.form.get('address'),
-      # genres=request.form.getlist('genres'),
       phone=request.form.get('phone'),
       facebook_link=request.form.get('facebook_link'),
       image_link=request.form.get('image_link'),
@@ -488,7 +485,7 @@ def create_artist_submission():
       seeking_venue=request.form.get('seeking_venue') == 'True',
       seeking_description=request.form.get('seeking_description')
     )
- 
+
     db.session.add(new_artist)
     db.session.commit()
   except:
